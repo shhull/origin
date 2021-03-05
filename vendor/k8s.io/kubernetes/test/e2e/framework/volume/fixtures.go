@@ -366,7 +366,7 @@ func runVolumeTesterPod(client clientset.Interface, config TestConfig, podSuffix
 	ginkgo.By(fmt.Sprint("starting ", config.Prefix, "-", podSuffix))
 	var gracePeriod int64 = 1
 	var command string
-	log("----------------------------lynn-debug-runVolumeTesterPod")
+	ginkgo.By(fmt.Sprintf("----------------------------lynn-debug-runVolumeTesterPod"))
 	if !framework.NodeOSDistroIs("windows") {
 		command = "while true ; do sleep 2; done "
 	} else {
@@ -403,7 +403,7 @@ func runVolumeTesterPod(client clientset.Interface, config TestConfig, podSuffix
 		},
 	}
 	e2epod.SetNodeSelection(&clientPod.Spec, config.ClientNodeSelection)
-	log("----------------------------lynn-debug-runVolumeTesterPod-clientPod")
+	ginkgo.By(fmt.Sprintf("----------------------------lynn-debug-runVolumeTesterPod-clientPod"))
 	for i, test := range tests {
 		volumeName := fmt.Sprintf("%s-%s-%d", config.Prefix, "volume", i)
 
@@ -434,10 +434,10 @@ func runVolumeTesterPod(client clientset.Interface, config TestConfig, podSuffix
 		})
 	}
 	podsNamespacer := client.CoreV1().Pods(config.Namespace)
-	log("----------------------------lynn-debug-runVolumeTesterPod-podsNamespacer")
+	ginkgo.By(fmt.Sprintf("----------------------------lynn-debug-runVolumeTesterPod-podsNamespacer"))
 	clientPod, err := podsNamespacer.Create(context.TODO(), clientPod, metav1.CreateOptions{})
 	time.Sleep(60 * time.Second)
-	log("----------------------------lynn-debug-waiting for 60 seconds.")
+	ginkgo.By(fmt.Sprintf("----------------------------lynn-debug-waiting for 60 seconds."))
 	if err != nil {
 		return nil, err
 	}
@@ -539,7 +539,7 @@ func InjectContent(f *framework.Framework, config TestConfig, fsGroup *int64, fs
 	if framework.NodeOSDistroIs("windows") {
 		privileged = false
 	}
-	log("----------------------------lynn-debug-InjectContent")
+	ginkgo.By(fmt.Sprintf("----------------------------lynn-debug-InjectContent"))
 	injectorPod, err := runVolumeTesterPod(f.ClientSet, config, "injector", privileged, fsGroup, tests, false /*slow*/)
 	if err != nil {
 		framework.Failf("Failed to create injector pod: %v", err)
