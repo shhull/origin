@@ -441,12 +441,17 @@ func runVolumeTesterPod(client clientset.Interface, config TestConfig, podSuffix
 	if err != nil {
 		return nil, err
 	}
+	ginkgo.By(fmt.Sprintf("-----------------------------lynn-debug-pod-name",clientPod.Name))
 	if slow {
 		time.Sleep(60 * time.Second)
+		ginkgo.By(fmt.Sprintf("----------------------------lynn-debug-i am slow."))
 		err = e2epod.WaitForPodRunningInNamespaceSlow(client, clientPod.Name, clientPod.Namespace)
 	} else {
 		time.Sleep(60 * time.Second)
+		ginkgo.By(fmt.Sprintf("----------------------------lynn-debug-i am not slow."))
 		err = e2epod.WaitForPodRunningInNamespace(client, clientPod)
+
+		
 	}
 	if err != nil {
 		e2epod.DeletePodOrFail(client, clientPod.Namespace, clientPod.Name)
