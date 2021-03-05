@@ -426,6 +426,7 @@ func (c *sioClient) WaitForAttachedDevice(token string) (string, error) {
 		return "", fmt.Errorf("invalid attach token")
 	}
 
+	log("----------------------------lynn-debug-WaitForAttachedDevice")
 	// wait for device to  show up in local device list
 	ticker := time.NewTicker(time.Second)
 	defer ticker.Stop()

@@ -366,7 +366,7 @@ func runVolumeTesterPod(client clientset.Interface, config TestConfig, podSuffix
 	ginkgo.By(fmt.Sprint("starting ", config.Prefix, "-", podSuffix))
 	var gracePeriod int64 = 1
 	var command string
-
+	ginkgo.By(fmt.Sprint("----------------------------lynn-debug-runVolumeTesterPod")
 	if !framework.NodeOSDistroIs("windows") {
 		command = "while true ; do sleep 2; done "
 	} else {
@@ -403,7 +403,7 @@ func runVolumeTesterPod(client clientset.Interface, config TestConfig, podSuffix
 		},
 	}
 	e2epod.SetNodeSelection(&clientPod.Spec, config.ClientNodeSelection)
-
+	ginkgo.By(fmt.Sprint("----------------------------lynn-debug-runVolumeTesterPod-clientPod")
 	for i, test := range tests {
 		volumeName := fmt.Sprintf("%s-%s-%d", config.Prefix, "volume", i)
 
@@ -434,13 +434,18 @@ func runVolumeTesterPod(client clientset.Interface, config TestConfig, podSuffix
 		})
 	}
 	podsNamespacer := client.CoreV1().Pods(config.Namespace)
+	ginkgo.By(fmt.Sprint("----------------------------lynn-debug-runVolumeTesterPod-podsNamespacer")
 	clientPod, err := podsNamespacer.Create(context.TODO(), clientPod, metav1.CreateOptions{})
+	time.Sleep(60 * time.Second)
+	log("----------------------------lynn-debug-waiting for 60 seconds.")
 	if err != nil {
 		return nil, err
 	}
 	if slow {
+		time.Sleep(60 * time.Second)
 		err = e2epod.WaitForPodRunningInNamespaceSlow(client, clientPod.Name, clientPod.Namespace)
 	} else {
+		time.Sleep(60 * time.Second)
 		err = e2epod.WaitForPodRunningInNamespace(client, clientPod)
 	}
 	if err != nil {
@@ -534,6 +539,7 @@ func InjectContent(f *framework.Framework, config TestConfig, fsGroup *int64, fs
 	if framework.NodeOSDistroIs("windows") {
 		privileged = false
 	}
+	ginkgo.By(fmt.Sprint("----------------------------lynn-debug-InjectContent")
 	injectorPod, err := runVolumeTesterPod(f.ClientSet, config, "injector", privileged, fsGroup, tests, false /*slow*/)
 	if err != nil {
 		framework.Failf("Failed to create injector pod: %v", err)
