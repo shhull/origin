@@ -539,7 +539,7 @@ func InjectContent(f *framework.Framework, config TestConfig, fsGroup *int64, fs
 	if framework.NodeOSDistroIs("windows") {
 		privileged = false
 	}
-	ginkgo.By(fmt.Sprint("----------------------------lynn-debug-InjectContent")
+	log("----------------------------lynn-debug-InjectContent")
 	injectorPod, err := runVolumeTesterPod(f.ClientSet, config, "injector", privileged, fsGroup, tests, false /*slow*/)
 	if err != nil {
 		framework.Failf("Failed to create injector pod: %v", err)
