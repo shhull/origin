@@ -366,7 +366,7 @@ func runVolumeTesterPod(client clientset.Interface, config TestConfig, podSuffix
 	ginkgo.By(fmt.Sprint("starting ", config.Prefix, "-", podSuffix))
 	var gracePeriod int64 = 1
 	var command string
-	ginkgo.By(fmt.Sprint("----------------------------lynn-debug-runVolumeTesterPod")
+	log("----------------------------lynn-debug-runVolumeTesterPod")
 	if !framework.NodeOSDistroIs("windows") {
 		command = "while true ; do sleep 2; done "
 	} else {
@@ -403,7 +403,7 @@ func runVolumeTesterPod(client clientset.Interface, config TestConfig, podSuffix
 		},
 	}
 	e2epod.SetNodeSelection(&clientPod.Spec, config.ClientNodeSelection)
-	ginkgo.By(fmt.Sprint("----------------------------lynn-debug-runVolumeTesterPod-clientPod")
+	log("----------------------------lynn-debug-runVolumeTesterPod-clientPod")
 	for i, test := range tests {
 		volumeName := fmt.Sprintf("%s-%s-%d", config.Prefix, "volume", i)
 
@@ -434,7 +434,7 @@ func runVolumeTesterPod(client clientset.Interface, config TestConfig, podSuffix
 		})
 	}
 	podsNamespacer := client.CoreV1().Pods(config.Namespace)
-	ginkgo.By(fmt.Sprint("----------------------------lynn-debug-runVolumeTesterPod-podsNamespacer")
+	log("----------------------------lynn-debug-runVolumeTesterPod-podsNamespacer")
 	clientPod, err := podsNamespacer.Create(context.TODO(), clientPod, metav1.CreateOptions{})
 	time.Sleep(60 * time.Second)
 	log("----------------------------lynn-debug-waiting for 60 seconds.")
