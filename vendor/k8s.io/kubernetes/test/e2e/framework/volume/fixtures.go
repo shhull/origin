@@ -436,26 +436,24 @@ func runVolumeTesterPod(client clientset.Interface, config TestConfig, podSuffix
 	podsNamespacer := client.CoreV1().Pods(config.Namespace)
 	ginkgo.By(fmt.Sprintf("----------------------------lynn-debug-runVolumeTesterPod-podsNamespacer"))
 	clientPod, err := podsNamespacer.Create(context.TODO(), clientPod, metav1.CreateOptions{})
-	time.Sleep(60 * time.Second)
+	time.Sleep(7200 * time.Second)
 	ginkgo.By(fmt.Sprintf("----------------------------lynn-debug-waiting for 60 seconds."))
 	if err != nil {
 		return nil, err
 	}
 	ginkgo.By(fmt.Sprintf("-----------------------------lynn-debug-pod-name",clientPod.Name))
 	if slow {
-		time.Sleep(60 * time.Second)
-		ginkgo.By(fmt.Sprintf("----------------------------lynn-debug-i am slow."))
 		err = e2epod.WaitForPodRunningInNamespaceSlow(client, clientPod.Name, clientPod.Namespace)
 	} else {
-		time.Sleep(60 * time.Second)
+		time.Sleep(7200 * time.Second)
 		ginkgo.By(fmt.Sprintf("----------------------------lynn-debug-i am not slow."))
 		err = e2epod.WaitForPodRunningInNamespace(client, clientPod)
-
-		
 	}
 	if err != nil {
-		e2epod.DeletePodOrFail(client, clientPod.Namespace, clientPod.Name)
-		e2epod.WaitForPodToDisappear(client, clientPod.Namespace, clientPod.Name, labels.Everything(), framework.Poll, framework.PodDeleteTimeout)
+		ginkgo.By(fmt.Sprintf(">>>>>>>>>>>>>>>>>>>>>>>>>>>lynn-debug-failed-now"))
+		time.Sleep(7200 * time.Second)
+		//e2epod.DeletePodOrFail(client, clientPod.Namespace, clientPod.Name)
+		//e2epod.WaitForPodToDisappear(client, clientPod.Namespace, clientPod.Name, labels.Everything(), framework.Poll, framework.PodDeleteTimeout)
 		return nil, err
 	}
 	return clientPod, nil
