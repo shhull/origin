@@ -212,7 +212,7 @@ func WaitForPodCondition(c clientset.Interface, ns, podName, desc string, timeou
 	e2elog.Logf("Waiting up to %v for pod %q in namespace %q to be %q", timeout, podName, ns, desc)
 	e2elog.Logf("----------------------------lynn-debug-WaitForPodCondition-waiting...")
 	for start := time.Now(); time.Since(start) < timeout; time.Sleep(poll) {
-		time.Sleep(60 * time.Second)
+		time.Sleep(600 * time.Second)
 		pod, err := c.CoreV1().Pods(ns).Get(context.TODO(), podName, metav1.GetOptions{})
 		if err != nil {
 			if apierrors.IsNotFound(err) {
