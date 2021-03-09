@@ -21,6 +21,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"time"
 	"sync"
 	"text/tabwriter"
 	"time"
@@ -345,6 +346,8 @@ func WaitForPodRunningInNamespace(c clientset.Interface, pod *v1.Pod) error {
 	if pod.Status.Phase == v1.PodRunning {
 		return nil
 	}
+	ginkgo.By(fmt.Sprintf("********************lynn-debug-waiting for 5 minutes."))
+	time.Sleep(5 * time.Minute)
 	return WaitTimeoutForPodRunningInNamespace(c, pod.Name, pod.Namespace, podStartTimeout)
 }
 
