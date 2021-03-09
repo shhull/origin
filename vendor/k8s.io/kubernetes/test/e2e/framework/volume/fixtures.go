@@ -80,11 +80,11 @@ const (
 	TiB int64 = 1024 * GiB
 
 	// VolumeServerPodStartupTimeout is a waiting period for volume server (Ceph, ...) to initialize itself.
-	VolumeServerPodStartupTimeout = 3 * time.Minute
+	VolumeServerPodStartupTimeout = 10 * time.Minute
 
 	// PodCleanupTimeout is a waiting period for pod to be cleaned up and unmount its volumes so we
 	// don't tear down containers with NFS/Ceph/Gluster server too early.
-	PodCleanupTimeout = 20 * time.Second
+	PodCleanupTimeout = 60 * time.Second
 )
 
 // SizeRange encapsulates a range of sizes specified as minimum and maximum quantity strings
@@ -406,7 +406,7 @@ func runVolumeTesterPod(client clientset.Interface, config TestConfig, podSuffix
 	ginkgo.By(fmt.Sprintf("----------------------------lynn-debug-runVolumeTesterPod-clientPod"))
 	for i, test := range tests {
 		volumeName := fmt.Sprintf("%s-%s-%d", config.Prefix, "volume", i)
-
+		ginkgo.By(fmt.Sprintf("----------------------------lynn-debug-runVolumeTesterPod-volumeName",volumeName))
 		// We need to make the container privileged when SELinux is enabled on the
 		// host,  so the test can write data to a location like /tmp. Also, due to
 		// the Docker bug below, it's not currently possible to map a device with
@@ -434,9 +434,9 @@ func runVolumeTesterPod(client clientset.Interface, config TestConfig, podSuffix
 		})
 	}
 	podsNamespacer := client.CoreV1().Pods(config.Namespace)
-	ginkgo.By(fmt.Sprintf("----------------------------lynn-debug-runVolumeTesterPod-podsNamespacer"))
 	clientPod, err := podsNamespacer.Create(context.TODO(), clientPod, metav1.CreateOptions{})
-	ginkgo.By(fmt.Sprintf("----------------------------lynn-debug-waiting for 60 seconds."))
+	ginkgo.By(fmt.Sprintf("----------------------------lynn-debug-waiting for 10 minutes."))
+	time.Sleep(30 * time.Minute)
 	if err != nil {
 		ginkgo.By(fmt.Sprintf(">>>>>>>>>>>>>>>>>>>>>>>>>>>lynn-debug-error-exit"))
 		return nil, err
@@ -450,7 +450,7 @@ func runVolumeTesterPod(client clientset.Interface, config TestConfig, podSuffix
 	}
 	if err != nil {
 		ginkgo.By(fmt.Sprintf(">>>>>>>>>>>>>>>>>>>>>>>>>>>lynn-debug-failed-now"))
-		time.Sleep(7200 * time.Second)
+		//time.Sleep(7200 * time.Second)
 		//e2epod.DeletePodOrFail(client, clientPod.Namespace, clientPod.Name)
 		//e2epod.WaitForPodToDisappear(client, clientPod.Namespace, clientPod.Name, labels.Everything(), framework.Poll, framework.PodDeleteTimeout)
 		return nil, err

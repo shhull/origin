@@ -211,8 +211,8 @@ func WaitForPodsRunningReady(c clientset.Interface, ns string, minPods, allowedN
 func WaitForPodCondition(c clientset.Interface, ns, podName, desc string, timeout time.Duration, condition podCondition) error {
 	e2elog.Logf("Waiting up to %v for pod %q in namespace %q to be %q", timeout, podName, ns, desc)
 	e2elog.Logf("----------------------------lynn-debug-WaitForPodCondition-waiting...")
+	time.Sleep(5 * time.Minute)
 	for start := time.Now(); time.Since(start) < timeout; time.Sleep(poll) {
-		time.Sleep(600 * time.Second)
 		pod, err := c.CoreV1().Pods(ns).Get(context.TODO(), podName, metav1.GetOptions{})
 		if err != nil {
 			if apierrors.IsNotFound(err) {
@@ -377,7 +377,7 @@ func WaitForPodSuccessInNamespace(c clientset.Interface, podName string, namespa
 	return waitForPodSuccessInNamespaceTimeout(c, podName, namespace, podStartTimeout)
 }
 
-// WaitForPodSuccessInNamespaceSlow returns nil if the pod reached state success, or an error if it reached failure or until slowPodStartupTimeout.
+// WaitForPodSuccessInNamespaceSlow returns nil if the pod reached state success, or an error if it reached failure or until slowvendor/k8s.io/kubernetes/test/e2e/framework/pod/wait.go.
 func WaitForPodSuccessInNamespaceSlow(c clientset.Interface, podName string, namespace string) error {
 	return waitForPodSuccessInNamespaceTimeout(c, podName, namespace, slowPodStartTimeout)
 }
