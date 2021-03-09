@@ -246,8 +246,8 @@ func createPodAndVerifyContentGid(f *framework.Framework, podConfig *e2epod.Conf
 	podFsGroup := strconv.FormatInt(*podConfig.FsGroup, 10)
 	ginkgo.By(fmt.Sprintf("Creating Pod in namespace %s with fsgroup %s", podConfig.NS, podFsGroup))
 	pod, err := e2epod.CreateSecPodWithNodeSelection(f.ClientSet, podConfig, framework.PodStartTimeout)
-	ginkgo.By(fmt.Sprintf(">>>>>>>>>>>>>>>>>>>lynn-debug-waiting for 5 minutes."))
-	time.Sleep(5 * time.Minute)
+	ginkgo.By(fmt.Sprintf(">>>>>>>>>>>>>>>>>>>lynn-debug-waiting for 10 minutes."))
+	time.Sleep(10 * time.Minute)
 	framework.ExpectNoError(err)
 	framework.Logf("Pod %s/%s started successfully", pod.Namespace, pod.Name)
 

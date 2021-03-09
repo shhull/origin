@@ -435,8 +435,8 @@ func runVolumeTesterPod(client clientset.Interface, config TestConfig, podSuffix
 	}
 	podsNamespacer := client.CoreV1().Pods(config.Namespace)
 	clientPod, err := podsNamespacer.Create(context.TODO(), clientPod, metav1.CreateOptions{})
-	ginkgo.By(fmt.Sprintf("----------------------------lynn-debug-waiting for 5 minutes."))
-	time.Sleep(5 * time.Minute)
+	ginkgo.By(fmt.Sprintf("----------------------------lynn-debug-waiting for 10 minutes."))
+	time.Sleep(10 * time.Minute)
 	ginkgo.By(fmt.Sprintf("-----------------------------lynn-debug-pod-name",clientPod.Name))
 	ginkgo.By(fmt.Sprintf("-----------------------------lynn-debug-pod-status-1",clientPod.Status))
 	if err != nil {
