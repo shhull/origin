@@ -465,15 +465,23 @@ func testVolumeContent(f *framework.Framework, pod *v1.Pod, fsGroup *int64, fsTy
 	ginkgo.By("Checking that text file contents are perfect.")
 	for i, test := range tests {
 		if test.Mode == v1.PersistentVolumeBlock {
+			ginkgo.By(fmt.Sprintf(">>>>>>>>>>>>>>>>>>>>>>>>>>>lynn-debug-verify-i am in block."))
+			ginkgo.By(fmt.Sprintf(">>>>>>>>>>>>>>>>>>>>>>>>>>>lynn-debug-verify-volcontent-block-podname",pod.Name))
+			ginkgo.By(fmt.Sprintf(">>>>>>>>>>>>>>>>>>>>>>>>>>>lynn-debug-verify-volcontent-block-Namespace",pod.Namespace))
+			ginkgo.By(fmt.Sprintf(">>>>>>>>>>>>>>>>>>>>>>>>>>>lynn-debug-verify-volcontent-block-status",pod.Status))
 			// Block: check content
 			deviceName := fmt.Sprintf("/opt/%d", i)
+			ginkgo.By(fmt.Sprintf(">>>>>>>>>>>>>>>>>>>>>>>>>>>lynn-debug-verify-device",deviceName))
 			commands := generateReadBlockCmd(deviceName, len(test.ExpectedContent))
+			ginkgo.By(fmt.Sprintf(">>>>>>>>>>>>>>>>>>>>>>>>>>>lynn-debug-verify-commands",commands))
 			_, err := framework.LookForStringInPodExec(pod.Namespace, pod.Name, commands, test.ExpectedContent, time.Minute)
 			framework.ExpectNoError(err, "failed: finding the contents of the block device %s.", deviceName)
+			ginkgo.By(fmt.Sprintf(">>>>>>>>>>>>>>>>>>>>>>>>>>>lynn-debug-verify-volcontent-block-no-error"))
 
 			// Check that it's a real block device
 			utils.CheckVolumeModeOfPath(f, pod, test.Mode, deviceName)
 		} else {
+			ginkgo.By(fmt.Sprintf(">>>>>>>>>>>>>>>>>>>>>>>>>>>lynn-debug-verify-i am in file system."))
 			// Filesystem: check content
 			fileName := fmt.Sprintf("/opt/%d/%s", i, test.File)
 			commands := GenerateReadFileCmd(fileName)
@@ -568,7 +576,9 @@ func InjectContent(f *framework.Framework, config TestConfig, fsGroup *int64, fs
 			fileName := fmt.Sprintf("/opt/%d/%s", i, test.File)
 			commands = append(commands, generateWriteFileCmd(test.ExpectedContent, fileName)...)
 		}
+		ginkgo.By(fmt.Sprintf("----------------------------lynn-debug-writing-pod-status",injectorPod.Status))
 		out, err := framework.RunKubectl(injectorPod.Namespace, commands...)
+		ginkgo.By(fmt.Sprintf("----------------------------lynn-debug-writing-out",out))
 		framework.ExpectNoError(err, "failed: writing the contents: %s", out)
 	}
 
