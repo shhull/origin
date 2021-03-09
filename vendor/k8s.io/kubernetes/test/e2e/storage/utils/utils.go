@@ -865,8 +865,10 @@ func WaitForGVRFinalizer(ctx context.Context, c dynamic.Interface, gvr schema.Gr
 
 // VerifyFilePathGidInPod verfies expected GID of the target filepath
 func VerifyFilePathGidInPod(f *framework.Framework, filePath, expectedGid string, pod *v1.Pod) {
+	ginkgo.By(fmt.Sprintf(">>>>>>>>>>>>>>>>>>>lynn-debug-fsgroup-verify"))
 	cmd := fmt.Sprintf("ls -l %s", filePath)
 	stdout, stderr, err := PodExec(f, pod, cmd)
+	ginkgo.By(fmt.Sprintf(">>>>>>>>>>>>>>>>>>>lynn-debug-fsgroup-verify-stdout",stdout))
 	framework.ExpectNoError(err)
 	framework.Logf("pod %s/%s exec for cmd %s, stdout: %s, stderr: %s", pod.Namespace, pod.Name, cmd, stdout, stderr)
 	ll := strings.Fields(stdout)
