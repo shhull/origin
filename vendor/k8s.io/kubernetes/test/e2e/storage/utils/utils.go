@@ -113,10 +113,13 @@ func VerifyExecInPodFail(f *framework.Framework, pod *v1.Pod, shExec string, exi
 	ginkgo.By(fmt.Sprintf(">>>>>>>>>>>>>>>>>>>>>>>>>>>lynn-debug-verify-execinfail-1-entering"))
 	stdout, stderr, err := PodExec(f, pod, shExec)
 	ginkgo.By(fmt.Sprintf(">>>>>>>>>>>>>>>>>>>>>>>>>>>lynn-debug-check-execinfail-1-stdout->>>>>>>",stdout))
+	ginkgo.By(fmt.Sprintf(">>>>>>>>>>>>>>>>>>>>>>>>>>>lynn-debug-check-execinfail-2-err->>>>>>>",err))
 	if err != nil {
-		ginkgo.By(fmt.Sprintf(">>>>>>>>>>>>>>>>>>>>>>>>>>>lynn-debug-check-execinfail-2-stderr->>>>>>>",stderr))
+		ginkgo.By(fmt.Sprintf(">>>>>>>>>>>>>>>>>>>>>>>>>>>lynn-debug-check-execinfail-3-i am error now->>>>>>>",stderr))
 		if exiterr, ok := err.(clientexec.ExitError); ok {
 			actualExitCode := exiterr.ExitStatus()
+			ginkgo.By(fmt.Sprintf(">>>>>>>>>>>>>>>>>>>>>>>>>>>lynn-debug-check-execinfail-4-actualExitCode->>>>>>>",actualExitCode))
+			ginkgo.By(fmt.Sprintf(">>>>>>>>>>>>>>>>>>>>>>>>>>>lynn-debug-check-execinfail-5-exitCode->>>>>>>",exitCode))
 			framework.ExpectEqual(actualExitCode, exitCode,
 				"%q should fail with exit code %d, but failed with exit code %d and error message %q\nstdout: %s\nstderr: %s",
 				shExec, exitCode, actualExitCode, exiterr, stdout, stderr)
@@ -126,6 +129,8 @@ func VerifyExecInPodFail(f *framework.Framework, pod *v1.Pod, shExec string, exi
 				shExec, exitCode, err, stdout, stderr)
 		}
 	}
+	ginkgo.By(fmt.Sprintf(">>>>>>>>>>>>>>>>>>>>>>>>>>>lynn-debug-check-fail-6-shExec->>>>>>>",shExec))
+	ginkgo.By(fmt.Sprintf(">>>>>>>>>>>>>>>>>>>>>>>>>>>lynn-debug-check-fail-7-exitCode->>>>>>>",exitCode))
 	framework.ExpectError(err, "%q should fail with exit code %d, but exit without error", shExec, exitCode)
 }
 
@@ -876,10 +881,14 @@ func VerifyFilePathGidInPod(f *framework.Framework, filePath, expectedGid string
 	ginkgo.By(fmt.Sprintf(">>>>>>>>>>>>>>>>>>>lynn-debug-fsgroup-verify"))
 	cmd := fmt.Sprintf("ls -l %s", filePath)
 	stdout, stderr, err := PodExec(f, pod, cmd)
-	ginkgo.By(fmt.Sprintf(">>>>>>>>>>>>>>>>>>>lynn-debug-fsgroup-verify-stdout",stdout))
+	ginkgo.By(fmt.Sprintf(">>>>>>>>>>>>>>>>>>>lynn-debug-fsgroup-verify-stdout=",stdout))
+	ginkgo.By(fmt.Sprintf(">>>>>>>>>>>>>>>>>>>lynn-debug-fsgroup-verify-stderr=",stderr))
+	ginkgo.By(fmt.Sprintf(">>>>>>>>>>>>>>>>>>>lynn-debug-fsgroup-verify-error=",err))
 	framework.ExpectNoError(err)
 	framework.Logf("pod %s/%s exec for cmd %s, stdout: %s, stderr: %s", pod.Namespace, pod.Name, cmd, stdout, stderr)
 	ll := strings.Fields(stdout)
+	ginkgo.By(fmt.Sprintf(">>>>>>>>>>>>>>>>>>>lynn-debug-fsgroup-verify-expectedGid=",expectedGid))
+	ginkgo.By(fmt.Sprintf(">>>>>>>>>>>>>>>>>>>lynn-debug-fsgroup-verify-ll=",ll))
 	framework.Logf("stdout split: %v, expected gid: %v", ll, expectedGid)
 	framework.ExpectEqual(ll[3], expectedGid)
 }
