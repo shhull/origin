@@ -78,9 +78,12 @@ func PodExec(f *framework.Framework, pod *v1.Pod, shExec string) (string, string
 
 // VerifyExecInPodSucceed verifies shell cmd in target pod succeed
 func VerifyExecInPodSucceed(f *framework.Framework, pod *v1.Pod, shExec string) {
+	ginkgo.By(fmt.Sprintf(">>>>>>>>>>>>>>>>>>>>>>>>>>>lynn-debug-verify-exec-success"))
 	stdout, stderr, err := PodExec(f, pod, shExec)
+	ginkgo.By(fmt.Sprintf(">>>>>>>>>>>>>>>>>>>>>>>>>>>lynn-debug-verify-exec-stdout",stdout))
 	if err != nil {
 
+		ginkgo.By(fmt.Sprintf(">>>>>>>>>>>>>>>>>>lynn-debug-verify-exec-stderr<<<<<<<<",stderr))
 		if exiterr, ok := err.(uexec.CodeExitError); ok {
 			exitCode := exiterr.ExitStatus()
 			framework.ExpectNoError(err,
@@ -107,8 +110,11 @@ func VerifyFSGroupInPod(f *framework.Framework, filePath, expectedFSGroup string
 
 // VerifyExecInPodFail verifies shell cmd in target pod fail with certain exit code
 func VerifyExecInPodFail(f *framework.Framework, pod *v1.Pod, shExec string, exitCode int) {
+	ginkgo.By(fmt.Sprintf(">>>>>>>>>>>>>>>>>>>>>>>>>>>lynn-debug-verify-execinfail-1-entering"))
 	stdout, stderr, err := PodExec(f, pod, shExec)
+	ginkgo.By(fmt.Sprintf(">>>>>>>>>>>>>>>>>>>>>>>>>>>lynn-debug-check-execinfail-1-stdout->>>>>>>",stdout))
 	if err != nil {
+		ginkgo.By(fmt.Sprintf(">>>>>>>>>>>>>>>>>>>>>>>>>>>lynn-debug-check-execinfail-2-stderr->>>>>>>",stderr))
 		if exiterr, ok := err.(clientexec.ExitError); ok {
 			actualExitCode := exiterr.ExitStatus()
 			framework.ExpectEqual(actualExitCode, exitCode,
@@ -617,12 +623,14 @@ func PrivilegedTestPSPClusterRoleBinding(client clientset.Interface,
 // CheckVolumeModeOfPath check mode of volume
 func CheckVolumeModeOfPath(f *framework.Framework, pod *v1.Pod, volMode v1.PersistentVolumeMode, path string) {
 	if volMode == v1.PersistentVolumeBlock {
+		ginkgo.By(fmt.Sprintf(">>>>>>>>>>>>>>>>>>>>>>>>>>>lynn-debug-check-volmode-in-blocking-1-VerifyExecInPodSucceed>>>>>>>"))
 		// Check if block exists
 		VerifyExecInPodSucceed(f, pod, fmt.Sprintf("test -b %s", path))
-
+		ginkgo.By(fmt.Sprintf(">>>>>>>>>>>>>>>>>>>>>>>>>>>lynn-debug-check-volmode-in-blocking-2-VerifyExecInPodFail>>>>>>>"))
 		// Double check that it's not directory
 		VerifyExecInPodFail(f, pod, fmt.Sprintf("test -d %s", path), 1)
 	} else {
+		ginkgo.By(fmt.Sprintf(">>>>>>>>>>>>>>>>>>>>>>>>>>>lynn-debug-check-volmode-in-filesystem>>>>>>>"))
 		// Check if directory exists
 		VerifyExecInPodSucceed(f, pod, fmt.Sprintf("test -d %s", path))
 
