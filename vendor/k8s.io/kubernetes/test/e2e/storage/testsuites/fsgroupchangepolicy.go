@@ -18,7 +18,6 @@ package testsuites
 
 import (
 	"fmt"
-	"time"
 	"strconv"
 
 	"github.com/onsi/ginkgo"
