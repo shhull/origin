@@ -436,7 +436,7 @@ func runVolumeTesterPod(client clientset.Interface, config TestConfig, podSuffix
 	podsNamespacer := client.CoreV1().Pods(config.Namespace)
 	clientPod, err := podsNamespacer.Create(context.TODO(), clientPod, metav1.CreateOptions{})
 	ginkgo.By(fmt.Sprintf("----------------------------lynn-debug-waiting for 10 minutes."))
-	time.Sleep(10 * time.Minute)
+	//time.Sleep(10 * time.Minute)
 	ginkgo.By(fmt.Sprintf("-----------------------------lynn-debug-pod-name",clientPod.Name))
 	ginkgo.By(fmt.Sprintf("-----------------------------lynn-debug-pod-status-1",clientPod.Status))
 	if err != nil {
@@ -448,14 +448,14 @@ func runVolumeTesterPod(client clientset.Interface, config TestConfig, podSuffix
 	} else {
 		ginkgo.By(fmt.Sprintf("----------------------------lynn-debug-i am not slow."))
 		ginkgo.By(fmt.Sprintf("-----------------------------lynn-debug-pod-status-2",clientPod.Status))
+		//time.Sleep(10 * time.Minute)
 		err = e2epod.WaitForPodRunningInNamespace(client, clientPod)
 	}
 	ginkgo.By(fmt.Sprintf("-----------------------------lynn-debug-pod-status-3",clientPod.Status))
 	if err != nil {
 		ginkgo.By(fmt.Sprintf(">>>>>>>>>>>>>>>>>>>>>>>>>>>lynn-debug-failed-exit"))
-		//time.Sleep(7200 * time.Second)
-		//e2epod.DeletePodOrFail(client, clientPod.Namespace, clientPod.Name)
-		//e2epod.WaitForPodToDisappear(client, clientPod.Namespace, clientPod.Name, labels.Everything(), framework.Poll, framework.PodDeleteTimeout)
+		e2epod.DeletePodOrFail(client, clientPod.Namespace, clientPod.Name)
+		e2epod.WaitForPodToDisappear(client, clientPod.Namespace, clientPod.Name, labels.Everything(), framework.Poll, framework.PodDeleteTimeout)
 		return nil, err
 	}
 	return clientPod, nil
@@ -532,7 +532,11 @@ func TestVolumeClientSlow(f *framework.Framework, config TestConfig, fsGroup *in
 }
 
 func testVolumeClient(f *framework.Framework, config TestConfig, fsGroup *int64, fsType string, tests []Test, slow bool) {
+	ginkgo.By(fmt.Sprintf("-------------------lynn-debug-verify-i am in testVolumeClient--------"))
 	clientPod, err := runVolumeTesterPod(f.ClientSet, config, "client", false, fsGroup, tests, slow)
+	
+	ginkgo.By(fmt.Sprintf("-------------------lynn-debug-verify-i am in testVolumeClient-err--------",err))
+	
 	if err != nil {
 		framework.Failf("Failed to create client pod: %v", err)
 	}

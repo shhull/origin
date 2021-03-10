@@ -180,6 +180,7 @@ func (t *volumesTestSuite) DefineTests(driver TestDriver, pattern testpatterns.T
 		// and we don't have reliable way to detect volumes are unmounted or
 		// not before starting the second pod.
 		e2evolume.InjectContent(f, config, fsGroup, pattern.FsType, tests)
+		ginkgo.By(fmt.Sprintf("-------------------lynn-debug-verify-injectcontent-complete--------"))
 		if driver.GetDriverInfo().Capabilities[CapPersistence] {
 			e2evolume.TestVolumeClient(f, config, fsGroup, pattern.FsType, tests)
 		} else {

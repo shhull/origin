@@ -889,7 +889,7 @@ func VerifyFilePathGidInPod(f *framework.Framework, filePath, expectedGid string
 	ll := strings.Fields(stdout)
 	ginkgo.By(fmt.Sprintf(">>>>>>>>>>>>>>>>>>>lynn-debug-fsgroup-verify-expectedGid=",expectedGid))
 	ginkgo.By(fmt.Sprintf(">>>>>>>>>>>>>>>>>>>lynn-debug-fsgroup-verify-ll=",ll))
-	framework.Logf("stdout split: %v, expected gid: %v", ll, expectedGid)
+	framework.Logf("stdout split: %v, expected gid: %v", ll[3], expectedGid)
 	framework.ExpectEqual(ll[3], expectedGid)
 }
 
