@@ -40,28 +40,34 @@ import (
 
 const (
 	// defaultPodDeletionTimeout is the default timeout for deleting pod.
-	defaultPodDeletionTimeout = 3 * time.Minute
+	//defaultPodDeletionTimeout = 3 * time.Minute
+	defaultPodDeletionTimeout = 5 * time.Minute
 
 	// podListTimeout is how long to wait for the pod to be listable.
 	podListTimeout = time.Minute
 
-	podRespondingTimeout = 15 * time.Minute
+	//podRespondingTimeout = 15 * time.Minute
+	podRespondingTimeout = 20 * time.Minute
 
 	// How long pods have to become scheduled onto nodes
-	podScheduledBeforeTimeout = podListTimeout + (20 * time.Second)
+   //podScheduledBeforeTimeout = podListTimeout + (20 * time.Second)
+	podScheduledBeforeTimeout = podListTimeout + (60 * time.Second)
 
 	// podStartTimeout is how long to wait for the pod to be started.
-	podStartTimeout = 5 * time.Minute
+	//podStartTimeout = 5 * time.Minute
+	podStartTimeout = 10 * time.Minute
 
 	// poll is how often to poll pods, nodes and claims.
-	poll = 2 * time.Second
+	//poll = 2 * time.Second
+	poll = 5 * time.Second
 
 	// singleCallTimeout is how long to try single API calls (like 'get' or 'list'). Used to prevent
 	// transient failures from failing tests.
 	singleCallTimeout = 5 * time.Minute
 
 	// Some pods can take much longer to get ready due to volume attach/detach latency.
-	slowPodStartTimeout = 15 * time.Minute
+	//slowPodStartTimeout = 15 * time.Minute
+	slowPodStartTimeout = 20 * time.Minute
 )
 
 type podCondition func(pod *v1.Pod) (bool, error)
