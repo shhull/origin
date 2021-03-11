@@ -269,7 +269,7 @@ func createPodAndVerifyContentGid(f *framework.Framework, podConfig *e2epod.Conf
 		framework.ExpectNoError(err)
 		cmd = fmt.Sprintf("touch %s", subDirFilePath)
 		_, _, err = storageutils.PodExec(f, pod, cmd)
-		ginkgo.By(fmt.Sprintf(">>>>>>>>>>>>>>>>>>>lynn-debug-fsgroup-toouch",err))
+		ginkgo.By(fmt.Sprintf(">>>>>>>>>>>>>>>>>>>lynn-debug-fsgroup-touch",err))
 		framework.ExpectNoError(err)
 		storageutils.VerifyFilePathGidInPod(f, subDirFilePath, podFsGroup, pod)
 		ginkgo.By(fmt.Sprintf(">>>>>>>>>>>>>>>>>>>lynn-debug-fsgroup-no error"))
