@@ -366,7 +366,7 @@ func runVolumeTesterPod(client clientset.Interface, config TestConfig, podSuffix
 	ginkgo.By(fmt.Sprint("starting ", config.Prefix, "-", podSuffix))
 	var gracePeriod int64 = 1
 	var command string
-	ginkgo.By(fmt.Sprintf("----------------------------lynn-debug-runVolumeTesterPod"))
+	ginkgo.By(fmt.Sprintf("----------------------------lynn-debug-runVolumeTesterPod-1"))
 	if !framework.NodeOSDistroIs("windows") {
 		command = "while true ; do sleep 2; done "
 	} else {
@@ -403,10 +403,10 @@ func runVolumeTesterPod(client clientset.Interface, config TestConfig, podSuffix
 		},
 	}
 	e2epod.SetNodeSelection(&clientPod.Spec, config.ClientNodeSelection)
-	ginkgo.By(fmt.Sprintf("----------------------------lynn-debug-runVolumeTesterPod-clientPod"))
+	ginkgo.By(fmt.Sprintf("----------------------------lynn-debug-runVolumeTesterPod-2-clientPod"))
 	for i, test := range tests {
 		volumeName := fmt.Sprintf("%s-%s-%d", config.Prefix, "volume", i)
-		ginkgo.By(fmt.Sprintf("----------------------------lynn-debug-runVolumeTesterPod-volumeName",volumeName))
+		ginkgo.By(fmt.Sprintf("----------------------------lynn-debug-runVolumeTesterPod-3-volumeName",volumeName))
 		// We need to make the container privileged when SELinux is enabled on the
 		// host,  so the test can write data to a location like /tmp. Also, due to
 		// the Docker bug below, it's not currently possible to map a device with
@@ -435,27 +435,25 @@ func runVolumeTesterPod(client clientset.Interface, config TestConfig, podSuffix
 	}
 	podsNamespacer := client.CoreV1().Pods(config.Namespace)
 	clientPod, err := podsNamespacer.Create(context.TODO(), clientPod, metav1.CreateOptions{})
-	ginkgo.By(fmt.Sprintf("----------------------------lynn-debug-waiting for 10 minutes."))
 	//time.Sleep(10 * time.Minute)
-	ginkgo.By(fmt.Sprintf("-----------------------------lynn-debug-pod-name",clientPod.Name))
-	ginkgo.By(fmt.Sprintf("-----------------------------lynn-debug-pod-status-1",clientPod.Status))
+	ginkgo.By(fmt.Sprintf("-----------------------------lynn-debug-runVolumeTesterPod-5-status",clientPod.Status))
 	if err != nil {
-		ginkgo.By(fmt.Sprintf(">>>>>>>>>>>>>>>>>>>>>>>>>>>lynn-debug-error-exit"))
+		ginkgo.By(fmt.Sprintf(">>>>>>>>>>>>>>>>>>>>>>>>>>>lynn-debug-runVolumeTesterPod-error-exit"))
 		return nil, err
 	}
 	if slow {
 		err = e2epod.WaitForPodRunningInNamespaceSlow(client, clientPod.Name, clientPod.Namespace)
 	} else {
-		ginkgo.By(fmt.Sprintf("----------------------------lynn-debug-i am not slow."))
-		ginkgo.By(fmt.Sprintf("-----------------------------lynn-debug-pod-status-2",clientPod.Status))
+		ginkgo.By(fmt.Sprintf("-----------------------------lynn-debug-pod-runVolumeTesterPod-6-status",clientPod.Status))
 		//time.Sleep(10 * time.Minute)
 		err = e2epod.WaitForPodRunningInNamespace(client, clientPod)
 	}
-	ginkgo.By(fmt.Sprintf("-----------------------------lynn-debug-pod-status-3",clientPod.Status))
+	ginkgo.By(fmt.Sprintf("-----------------------------lynn-debug-pod-runVolumeTesterPod-7-status",clientPod.Status))
+	ginkgo.By(fmt.Sprintf("-----------------------------lynn-debug-pod-runVolumeTesterPod-8-err",err))
 	if err != nil {
-		ginkgo.By(fmt.Sprintf(">>>>>>>>>>>>>>>>>>>>>>>>>>>lynn-debug-failed-exit"))
-		e2epod.DeletePodOrFail(client, clientPod.Namespace, clientPod.Name)
-		e2epod.WaitForPodToDisappear(client, clientPod.Namespace, clientPod.Name, labels.Everything(), framework.Poll, framework.PodDeleteTimeout)
+		ginkgo.By(fmt.Sprintf(">>>>>>>>>>>>>>>>>>>>>>>>>>>lynn-debug-runVolumeTesterPod-9-pod is not running"))
+		//e2epod.DeletePodOrFail(client, clientPod.Namespace, clientPod.Name)
+		//e2epod.WaitForPodToDisappear(client, clientPod.Namespace, clientPod.Name, labels.Everything(), framework.Poll, framework.PodDeleteTimeout)
 		return nil, err
 	}
 	return clientPod, nil
@@ -556,7 +554,7 @@ func InjectContent(f *framework.Framework, config TestConfig, fsGroup *int64, fs
 	if framework.NodeOSDistroIs("windows") {
 		privileged = false
 	}
-	ginkgo.By(fmt.Sprintf("----------------------------lynn-debug-InjectContent"))
+	ginkgo.By(fmt.Sprintf("----------------------------lynn-debug-InjectContent-1"))
 	injectorPod, err := runVolumeTesterPod(f.ClientSet, config, "injector", privileged, fsGroup, tests, false /*slow*/)
 	if err != nil {
 		framework.Failf("Failed to create injector pod: %v", err)
@@ -580,9 +578,9 @@ func InjectContent(f *framework.Framework, config TestConfig, fsGroup *int64, fs
 			fileName := fmt.Sprintf("/opt/%d/%s", i, test.File)
 			commands = append(commands, generateWriteFileCmd(test.ExpectedContent, fileName)...)
 		}
-		ginkgo.By(fmt.Sprintf("----------------------------lynn-debug-writing-pod-status",injectorPod.Status))
+		ginkgo.By(fmt.Sprintf("----------------------------lynn-debug-InjectContent-2-pod-status",injectorPod.Status))
 		out, err := framework.RunKubectl(injectorPod.Namespace, commands...)
-		ginkgo.By(fmt.Sprintf("----------------------------lynn-debug-writing-out",out))
+		ginkgo.By(fmt.Sprintf("----------------------------lynn-debug-InjectContent-3-out",out))
 		framework.ExpectNoError(err, "failed: writing the contents: %s", out)
 	}
 
