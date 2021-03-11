@@ -248,7 +248,7 @@ func createPodAndVerifyContentGid(f *framework.Framework, podConfig *e2epod.Conf
 	ginkgo.By(fmt.Sprintf(">>>>>>>>>>>>>>>>>>>lynn-debug-waiting for pod running in namespace."))
 	//time.Sleep(5 * time.Minute)
 	//framework.ExpectNoError(err)
-	err2 = e2epod.WaitForPodRunningInNamespace(f.ClientSet, podConfig)
+	err2 := e2epod.WaitForPodRunningInNamespace(f.ClientSet, pod)
 	framework.ExpectNoError(err2)
 	framework.Logf("Pod %s/%s started successfully", pod.Namespace, pod.Name)
 
