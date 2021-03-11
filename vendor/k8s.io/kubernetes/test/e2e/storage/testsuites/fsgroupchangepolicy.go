@@ -244,11 +244,12 @@ func (s *fsGroupChangePolicyTestSuite) DefineTests(driver TestDriver, pattern te
 func createPodAndVerifyContentGid(f *framework.Framework, podConfig *e2epod.Config, createInitialFiles bool, expectedRootDirFileOwnership, expectedSubDirFileOwnership string) *v1.Pod {
 	podFsGroup := strconv.FormatInt(*podConfig.FsGroup, 10)
 	ginkgo.By(fmt.Sprintf("Creating Pod in namespace %s with fsgroup %s", podConfig.NS, podFsGroup))
+	//pod, err := e2epod.CreateSecPodWithNodeSelection(f.ClientSet, podConfig, framework.PodStartTimeout)
 	pod, err := e2epod.CreateSecPodWithNodeSelection(f.ClientSet, podConfig, framework.PodStartTimeout)
 	ginkgo.By(fmt.Sprintf(">>>>>>>>>>>>>>>>>>>lynn-debug-waiting for pod running in namespace."))
 	//time.Sleep(5 * time.Minute)
-	//framework.ExpectNoError(err)
 	err2 := e2epod.WaitForPodRunningInNamespace(f.ClientSet, pod)
+	ginkgo.By(fmt.Sprintf(">>>>>>>>>>>>>>>>>>>lynn-debug-waiting for pod running-err.",err))
 	framework.ExpectNoError(err2)
 	framework.Logf("Pod %s/%s started successfully", pod.Namespace, pod.Name)
 

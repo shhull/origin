@@ -435,7 +435,7 @@ func runVolumeTesterPod(client clientset.Interface, config TestConfig, podSuffix
 	}
 	podsNamespacer := client.CoreV1().Pods(config.Namespace)
 	clientPod, err := podsNamespacer.Create(context.TODO(), clientPod, metav1.CreateOptions{})
-	//time.Sleep(10 * time.Minute)
+	time.Sleep(5 * time.Minute)
 	ginkgo.By(fmt.Sprintf("-----------------------------lynn-debug-runVolumeTesterPod-5-status",clientPod.Status))
 	if err != nil {
 		ginkgo.By(fmt.Sprintf(">>>>>>>>>>>>>>>>>>>>>>>>>>>lynn-debug-runVolumeTesterPod-error-exit"))
@@ -445,7 +445,7 @@ func runVolumeTesterPod(client clientset.Interface, config TestConfig, podSuffix
 		err = e2epod.WaitForPodRunningInNamespaceSlow(client, clientPod.Name, clientPod.Namespace)
 	} else {
 		ginkgo.By(fmt.Sprintf("-----------------------------lynn-debug-pod-runVolumeTesterPod-6-status",clientPod.Status))
-		//time.Sleep(10 * time.Minute)
+		time.Sleep(5 * time.Minute)
 		err = e2epod.WaitForPodRunningInNamespace(client, clientPod)
 	}
 	ginkgo.By(fmt.Sprintf("-----------------------------lynn-debug-pod-runVolumeTesterPod-7-status",clientPod.Status))
