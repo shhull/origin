@@ -104,7 +104,7 @@ func CreateSecPod(client clientset.Interface, podConfig *Config, timeout time.Du
 
 // CreateSecPodWithNodeSelection creates security pod with given claims
 func CreateSecPodWithNodeSelection(client clientset.Interface, podConfig *Config, timeout time.Duration) (*v1.Pod, error) {
-	fmt.Sprintf(">>>>>>>>>>>>>>>>>>>lynn-debug-CreateSecPodWithNodeSelection-entering.",err)
+	fmt.Sprintf(">>>>>>>>>>>>>>>>>>>lynn-debug-CreateSecPodWithNodeSelection-entering.")
 	pod, err := MakeSecPod(podConfig)
 	if err != nil {
 		return nil, fmt.Errorf("Unable to create pod: %v", err)
