@@ -249,8 +249,7 @@ func createPodAndVerifyContentGid(f *framework.Framework, podConfig *e2epod.Conf
 	
 	// //time.Sleep(5 * time.Minute)
 	// err2 := e2epod.WaitForPodRunningInNamespace(f.ClientSet, pod)
-	
-	//framework.ExpectNoError(err2)
+	framework.ExpectNoError(err)
 	framework.Logf("Pod %s/%s started successfully", pod.Namespace, pod.Name)
 
 	if createInitialFiles {
