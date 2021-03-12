@@ -75,7 +75,8 @@ const (
 	// PodListTimeout is how long to wait for the pod to be listable.
 	PodListTimeout = time.Minute
 	// PodStartTimeout is how long to wait for the pod to be started.
-	PodStartTimeout = 5 * time.Minute
+	//PodStartTimeout = 5 * time.Minute
+	PodStartTimeout = 10 * time.Minute
 
 	// PodStartShortTimeout is same as `PodStartTimeout` to wait for the pod to be started, but shorter.
 	// Use it case by case when we are sure pod start will not be delayed.

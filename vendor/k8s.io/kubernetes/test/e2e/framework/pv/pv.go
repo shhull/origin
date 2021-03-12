@@ -35,26 +35,24 @@ import (
 )
 
 const (
-	//pdRetryTimeout  = 5 * time.Minute
-	//pdRetryPollTime = 5 * time.Second
-	pdRetryTimeout  = 10 * time.Minute
-	pdRetryPollTime = 10 * time.Second
+	pdRetryTimeout  = 5 * time.Minute
+	pdRetryPollTime = 5 * time.Second
 
 	// PVBindingTimeout is how long PVs have to become bound.
-	//PVBindingTimeout = 3 * time.Minute
-	PVBindingTimeout = 6 * time.Minute
+	PVBindingTimeout = 3 * time.Minute
+	// PVBindingTimeout = 6 * time.Minute
 
 	// ClaimBindingTimeout is how long claims have to become bound.
-	//ClaimBindingTimeout = 3 * time.Minute
-	ClaimBindingTimeout = 6 * time.Minute
+	ClaimBindingTimeout = 3 * time.Minute
+	// ClaimBindingTimeout = 6 * time.Minute
 
 	// PVReclaimingTimeout is how long PVs have to beome reclaimed.
-	//PVReclaimingTimeout = 3 * time.Minute
-	PVReclaimingTimeout = 6 * time.Minute
+	PVReclaimingTimeout = 3 * time.Minute
+	// PVReclaimingTimeout = 6 * time.Minute
 
 	// PVDeletingTimeout is how long PVs have to become deleted.
-	//PVDeletingTimeout = 3 * time.Minute
-	PVDeletingTimeout = 6 * time.Minute
+	PVDeletingTimeout = 3 * time.Minute
+	// PVDeletingTimeout = 6 * time.Minute
 
 	// VolumeSelectorKey is the key for volume selector.
 	VolumeSelectorKey = "e2e-pv-pool"

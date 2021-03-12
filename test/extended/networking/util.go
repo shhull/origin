@@ -33,7 +33,8 @@ type NodeType int
 const (
 	// Initial pod start can be delayed O(minutes) by slow docker pulls
 	// TODO: Make this 30 seconds once #4566 is resolved.
-	podStartTimeout = 5 * time.Minute
+	//podStartTimeout = 5 * time.Minute
+	podStartTimeout = 10 * time.Minute
 
 	// How often to poll pods and nodes.
 	poll = 5 * time.Second

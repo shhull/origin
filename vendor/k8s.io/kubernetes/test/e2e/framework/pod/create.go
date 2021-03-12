@@ -104,6 +104,7 @@ func CreateSecPod(client clientset.Interface, podConfig *Config, timeout time.Du
 
 // CreateSecPodWithNodeSelection creates security pod with given claims
 func CreateSecPodWithNodeSelection(client clientset.Interface, podConfig *Config, timeout time.Duration) (*v1.Pod, error) {
+	ginkgo.By(fmt.Sprintf(">>>>>>>>>>>>>>>>>>>lynn-debug-CreateSecPodWithNodeSelection-entering.",err))
 	pod, err := MakeSecPod(podConfig)
 	if err != nil {
 		return nil, fmt.Errorf("Unable to create pod: %v", err)
@@ -115,6 +116,7 @@ func CreateSecPodWithNodeSelection(client clientset.Interface, podConfig *Config
 	}
 
 	// Waiting for pod to be running
+	ginkgo.By(fmt.Sprintf(">>>>>>>>>>>>>>>>>>>lynn-debug-waiting for pod running in namespace."))
 	err = WaitTimeoutForPodRunningInNamespace(client, pod.Name, podConfig.NS, timeout)
 	if err != nil {
 		return pod, fmt.Errorf("pod %q is not Running: %v", pod.Name, err)

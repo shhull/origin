@@ -42,7 +42,8 @@ import (
 
 const (
 	// DefaultPodDeletionTimeout is the default timeout for deleting pod
-	DefaultPodDeletionTimeout = 3 * time.Minute
+	//DefaultPodDeletionTimeout = 3 * time.Minute
+	DefaultPodDeletionTimeout = 5 * time.Minute
 
 	// the status of container event, copied from k8s.io/kubernetes/pkg/kubelet/events
 	killingContainer = "Killing"
